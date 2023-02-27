@@ -1,8 +1,8 @@
-var postcss = require('postcss');
+// var postcss = require('postcss');
 var list    = require('postcss/lib/list');
 var vars    = require('postcss-simple-vars');
 
-module.exports = postcss.plugin('postcss-for', function (opts) {
+var plugin = function (opts) {
 
     opts = opts || {};
     opts.nested = opts.nested || true;
@@ -108,7 +108,14 @@ module.exports = postcss.plugin('postcss-for', function (opts) {
         });
     };
 
-    return function (css) {
-        processOriginalLoops(css);
+    return {
+        postcssPlugin: 'postcss-for',
+        Once (css) {
+            processOriginalLoops(css);
+        }
     };
-});
+}
+
+plugin.postcss = true
+
+module.exports = plugin
